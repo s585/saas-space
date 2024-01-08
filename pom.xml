@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>name.svetov</groupId>
-    <artifactId>saas-space</artifactId>
-    <version>0.1</version>
-    <packaging>pom</packaging>
 
     <parent>
         <groupId>io.micronaut.platform</groupId>
@@ -13,25 +8,47 @@
         <version>4.2.2</version>
     </parent>
 
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>name.svetov</groupId>
+    <artifactId>saas-space</artifactId>
+    <version>0.1</version>
+    <packaging>pom</packaging>
+
+    <name>saas-space</name>
+
     <modules>
         <module>saas-space-db</module>
         <module>saas-space-impl</module>
     </modules>
 
     <properties>
-        <packaging>jar</packaging>
         <jdk.version>21</jdk.version>
         <release.version>21</release.version>
-        <micronaut.version>4.2.2</micronaut.version>
         <micronaut.runtime>netty</micronaut.runtime>
-        <micronaut.aot.enabled>false</micronaut.aot.enabled>
         <micronaut.aot.packageName>name.svetov.aot.generated</micronaut.aot.packageName>
+        <micronaut.aot.enabled>false</micronaut.aot.enabled>
         <micronaut.test.resources.enabled>true</micronaut.test.resources.enabled>
         <exec.mainClass>name.svetov.Application</exec.mainClass>
+
+        <micronaut.version>4.2.2</micronaut.version>
+        <micronaut-spring.version>5.3.0</micronaut-spring.version>
+        <spring-tx.version>6.0.7</spring-tx.version>
+        <spring-security-crypto.version>6.2.1</spring-security-crypto.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
-        <liquibase-maven-plugin.version>4.25.0</liquibase-maven-plugin.version>
-        <jooq-codegen-maven.version>3.19.1</jooq-codegen-maven.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+        <postgresql.version>42.7.1</postgresql.version>
+        <r2dbc-postgresql.version>1.0.3.RELEASE</r2dbc-postgresql.version>
+        <r2dbc-pool.version>1.0.0.RELEASE</r2dbc-pool.version>
+        <liquibase.version>4.25.0</liquibase.version>
+        <jooq.version>3.19.1</jooq.version>
+        <snakeyaml.version>2.2</snakeyaml.version>
+        <jakarta.validation-api.version>3.1.0-M1</jakarta.validation-api.version>
+        <assertj-core.version>3.25.1</assertj-core.version>
+        <hamcrest.version>2.2</hamcrest.version>
+        <junit-jupiter-engine.version>5.10.1</junit-jupiter-engine.version>
+        <junit-platform-engine.version>1.10.1</junit-platform-engine.version>
+        <mockito-core.version>5.8.0</mockito-core.version>
+        <log4j.version>2.20.0</log4j.version>
     </properties>
 
     <repositories>
@@ -46,86 +63,125 @@
             <dependency>
                 <groupId>io.micronaut</groupId>
                 <artifactId>micronaut-http-server-netty</artifactId>
+                <version>${micronaut.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
                 <groupId>io.micronaut.reactor</groupId>
                 <artifactId>micronaut-reactor</artifactId>
+                <version>${micronaut.reactor.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
                 <groupId>io.micronaut</groupId>
                 <artifactId>micronaut-management</artifactId>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>io.micronaut.liquibase</groupId>
-                <artifactId>micronaut-liquibase</artifactId>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>io.micronaut.validation</groupId>
-                <artifactId>micronaut-validation</artifactId>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.validation</groupId>
-                <artifactId>jakarta.validation-api</artifactId>
+                <version>${micronaut.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
                 <groupId>io.micronaut.r2dbc</groupId>
                 <artifactId>micronaut-r2dbc-core</artifactId>
+                <version>${micronaut.r2dbc.version}</version>
                 <scope>compile</scope>
             </dependency>
+            <dependency>
+                <groupId>io.micronaut.liquibase</groupId>
+                <artifactId>micronaut-liquibase</artifactId>
+                <version>${micronaut.liquibase.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.micronaut.validation</groupId>
+                <artifactId>micronaut-validation</artifactId>
+                <version>${micronaut.validation.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.validation</groupId>
+                <artifactId>jakarta.validation-api</artifactId>
+                <version>${jakarta.validation-api.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.micronaut.spring</groupId>
+                <artifactId>micronaut-spring</artifactId>
+                <version>${micronaut-spring.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-tx</artifactId>
+                <version>${spring-tx.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>io.micronaut.security</groupId>
                 <artifactId>micronaut-security-jwt</artifactId>
+                <version>${micronaut.security.version}</version>
                 <scope>compile</scope>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-crypto</artifactId>
+                <version>${spring-security-crypto.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>io.micronaut.serde</groupId>
                 <artifactId>micronaut-serde-jackson</artifactId>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>io.micronaut.sql</groupId>
-                <artifactId>micronaut-jdbc-hikari</artifactId>
+                <version>${micronaut.serialization.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
                 <groupId>io.micronaut.sql</groupId>
                 <artifactId>micronaut-jooq</artifactId>
+                <version>${micronaut.sql.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
                 <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>r2dbc-postgresql</artifactId>
+                <version>${r2dbc-postgresql.version}</version>
                 <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.r2dbc</groupId>
+                <artifactId>r2dbc-pool</artifactId>
+                <version>${r2dbc-pool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq</artifactId>
+                <version>${jooq.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-core</artifactId>
+                <version>${liquibase.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
                 <groupId>io.micronaut.openapi</groupId>
                 <artifactId>micronaut-openapi-annotations</artifactId>
+                <version>${micronaut.openapi.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>io.micronaut.testresources</groupId>
                 <artifactId>micronaut-test-resources-client</artifactId>
+                <version>${micronaut.test.resources.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -138,7 +194,6 @@
                 <artifactId>mapstruct-processor</artifactId>
                 <version>${mapstruct.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok-mapstruct-binding</artifactId>
@@ -147,64 +202,78 @@
             <dependency>
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
+                <version>${snakeyaml.version}</version>
                 <scope>runtime</scope>
             </dependency>
-
             <dependency>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
-                <version>${liquibase-maven-plugin.version}</version>
+                <version>${liquibase.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-codegen-maven</artifactId>
-                <version>${jooq-codegen-maven.version}</version>
+                <version>${jooq.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>io.micronaut</groupId>
                 <artifactId>micronaut-http-client</artifactId>
+                <version>${micronaut.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>io.micronaut.test</groupId>
                 <artifactId>micronaut-test-junit5</artifactId>
+                <version>${micronaut.test.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
+                <version>${assertj-core.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.hamcrest</groupId>
                 <artifactId>hamcrest</artifactId>
+                <version>${hamcrest.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit-jupiter-engine.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit-jupiter-engine.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-params</artifactId>
+                <version>${junit-jupiter-engine.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.junit.platform</groupId>
                 <artifactId>junit-platform-suite-engine</artifactId>
+                <version>${junit-platform-engine.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
+                <version>${mockito-core.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.4.14</version>
+                <scope>runtime</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -316,55 +385,6 @@
                             <arg>-Amicronaut.processing.module=space</arg>
                         </compilerArgs>
                     </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.liquibase</groupId>
-                    <artifactId>liquibase-maven-plugin</artifactId>
-                    <version>${liquibase-maven-plugin.version}</version>
-                    <configuration>
-                        <changeLogFile>${project.basedir}/src/main/resources/master.yaml</changeLogFile>
-                        <propertyFile>${project.basedir}/src/main/resources/liquibase.properties</propertyFile>
-                        <propertyFileWillOverride>true</propertyFileWillOverride>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.jooq</groupId>
-                    <artifactId>jooq-codegen-maven</artifactId>
-                    <version>${jooq-codegen-maven.version}</version>
-                    <executions>
-                        <execution>
-                            <phase>generate-sources</phase>
-                            <goals>
-                                <goal>generate</goal>
-                            </goals>
-                            <configuration>
-                                <jdbc>
-                                    <driver>org.postgresql.Driver</driver>
-                                    <url>jdbc:postgresql://localhost:5432/postgres</url>
-                                    <user>postgres</user>
-                                    <password>password</password>
-                                </jdbc>
-                                <generator>
-                                    <database>
-                                        <name>org.jooq.meta.postgres.PostgresDatabase</name>
-                                        <includes>*</includes>
-                                        <excludes>
-                                            databasechange.*
-                                        </excludes>
-                                        <inputSchema>public</inputSchema>
-                                        <outputSchemaToDefault>true</outputSchemaToDefault>
-                                    </database>
-                                    <generate>
-                                        <pojos>true</pojos>
-                                        <pojosEqualsAndHashCode>true</pojosEqualsAndHashCode>
-                                        <javaTimeTypes>true</javaTimeTypes>
-                                        <fluentSetters>true</fluentSetters>
-                                    </generate>
-                                    <target>target/generated-sources/model</target>
-                                </generator>
-                            </configuration>
-                        </execution>
-                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>

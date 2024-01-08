@@ -1,21 +1,51 @@
 micronaut:
   application:
     name: space
+  server:
+    port: 9595
   security:
+    enabled: true
     authentication: bearer
     token:
-      jwt:
+      bearer:
+        enabled: true
         signatures:
           secret:
             generator:
               secret: ${JWT_GENERATOR_SIGNATURE_SECRET:secret}
+              jws-algorithm: HS256
   router:
     static-resources:
       swagger-ui:
         mapping=/swagger-ui/**
         paths=classpath\:META-INF/swagger/views/swagger-ui
 
-datasources:
-  default:
-    driver-class-name: org.postgresql.Driver
+r2dbc:
+  datasources:
+    default:
+#      driverClassName: io.r2dbc:r2dbc-postgresql
+      db-type: postgresql
+      driver: postgresql
+      database: spacedb
+      host: localhost
+      port: 5432
+      username: spacedbpguser
+      password: password
+      options:
+        autoCommit: true
+        maxSize: 5
+        protocol: postgres
+        initialSize: 1
+        maxLifeTime: PT280S
+        maxIdleTime: PT60S
+        maxAcquireTime: PT6S
+        poolName: r2dbc-pool
+        registerJmx: true
+jooq:
+  r2dbc-datasources:
+    sql-dialect: POSTGRES
+
+
+
+
 
