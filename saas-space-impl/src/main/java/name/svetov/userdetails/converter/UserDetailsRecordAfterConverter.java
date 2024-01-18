@@ -11,6 +11,7 @@ import org.mapstruct.MappingTarget;
 @RequiredArgsConstructor
 public class UserDetailsRecordAfterConverter {
     private final PasswordRecordExtractor passwordRecordExtractor;
+
     @BeforeMapping
     public void before(@MappingTarget UserDetails userDetails, Record rec) {
         userDetails.setPassword(passwordRecordExtractor.extractPassword(rec));

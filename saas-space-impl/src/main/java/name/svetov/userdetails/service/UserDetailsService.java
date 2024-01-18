@@ -7,7 +7,10 @@ import java.util.UUID;
 
 public interface UserDetailsService {
     Mono<UserDetails> getOneById(UUID userDetailsId);
+
     Mono<UserDetails> getOneByUsername(String username);
+
+    Mono<Boolean> existsByUsername(String username);
 
     Mono<UserDetails> create(UserDetails userDetails);
 }

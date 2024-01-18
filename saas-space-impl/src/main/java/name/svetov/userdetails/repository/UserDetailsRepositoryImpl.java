@@ -10,7 +10,8 @@ import org.jooq.*;
 import org.jooq.generated.tables.records.UserDetailsRecord;
 import reactor.core.publisher.Mono;
 
-import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -20,11 +21,11 @@ import static org.jooq.generated.Tables.USER_DETAILS;
 
 @Singleton
 public class UserDetailsRepositoryImpl implements UserDetailsRepository {
-    private final DSLContext dslContext;
+    private final DSLContext context;
     private final UserDetailsRecordConverter recordConverter;
 
-    public UserDetailsRepositoryImpl(@Named("r2dbc") DSLContext dslContext, UserDetailsRecordConverter recordConverter) {
-        this.dslContext = dslContext;
+    public UserDetailsRepositoryImpl(@Named("r2dbc") DSLContext context, UserDetailsRecordConverter recordConverter) {
+        this.context = context;
         this.recordConverter = recordConverter;
     }
 
@@ -47,33 +48,40 @@ public class UserDetailsRepositoryImpl implements UserDetailsRepository {
     }
 
     @Override
+    public Mono<Boolean> existsByUsername(String username) {
+        return getOneByUsername(username)
+            .map(Objects::nonNull)
+            .switchIfEmpty(Mono.just(false));
+    }
+
+    @Override
     public Mono<Boolean> add(UserDetails userDetails) {
-        return Mono.from(generateInsertQuery(userDetails))
+        return Mono.from(insert(userDetails))
             .map(response -> response == 1);
     }
 
-    InsertSetMoreStep<UserDetailsRecord> generateInsertQuery(UserDetails userDetails) {
-        var now = ZonedDateTime.now();
-        return dslContext.insertInto(USER_DETAILS)
+    InsertSetMoreStep<UserDetailsRecord> insert(UserDetails userDetails) {
+        var now = OffsetDateTime.now();
+        return context.insertInto(USER_DETAILS)
             .set(USER_DETAILS.ID, userDetails.getId())
             .set(USER_DETAILS.USERNAME, userDetails.getUsername())
-            .set(USER_DETAILS.SECRET, userDetails.getPassword().getId())
+            .set(USER_DETAILS.PASSWORD, userDetails.getPassword().getId())
             .set(USER_DETAILS.FIRST_NAME, userDetails.getFirstName())
             .set(USER_DETAILS.LAST_NAME, userDetails.getLastName())
-            .set(USER_DETAILS.AGE, (int) userDetails.getAge())
+            .set(USER_DETAILS.BIRTH_DATE, userDetails.getBirthDate())
             .set(USER_DETAILS.SEX, userDetails.getSex())
             .set(USER_DETAILS.CITY, userDetails.getCity())
             .set(USER_DETAILS.COUNTRY, userDetails.getCountry())
             .set(USER_DETAILS.HOBBIES, CollectionUtils.emptyIfNull(userDetails.getHobbies()).toArray(String[]::new))
-            .set(USER_DETAILS.CREATED_DATE, now.toOffsetDateTime())
-            .set(USER_DETAILS.UPDATED_DATE, now.toOffsetDateTime());
+            .set(USER_DETAILS.CREATED_DATE, now)
+            .set(USER_DETAILS.UPDATED_DATE, now);
     }
 
     private SelectOnConditionStep<Record> select() {
-        return dslContext.select(this.getUserDetailsFields())
+        return context.select(this.getUserDetailsFields())
             .from(USER_DETAILS)
             .innerJoin(PASSWORD)
-            .on(USER_DETAILS.SECRET.eq(PASSWORD.ID));
+            .on(USER_DETAILS.PASSWORD.eq(PASSWORD.ID));
     }
 
     private Set<Field<?>> getUserDetailsFields() {
@@ -82,7 +90,7 @@ public class UserDetailsRepositoryImpl implements UserDetailsRepository {
             USER_DETAILS.USERNAME,
             USER_DETAILS.FIRST_NAME,
             USER_DETAILS.LAST_NAME,
-            USER_DETAILS.AGE,
+            USER_DETAILS.BIRTH_DATE,
             USER_DETAILS.SEX,
             USER_DETAILS.CITY,
             USER_DETAILS.COUNTRY,

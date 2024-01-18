@@ -24,6 +24,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
+    public Mono<Boolean> existsByUsername(String username) {
+        return userDetailsRepository.existsByUsername(username);
+    }
+
+    @Override
     public Mono<UserDetails> create(UserDetails userDetails) {
         return userDetailsRepository.add(userDetails)
             .then(userDetailsRepository.getOneById(userDetails.getId()));

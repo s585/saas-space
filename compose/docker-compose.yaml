@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  space-db:
+    image: postgres:15.5-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - ../compose/db/:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 2s
+      timeout: 2s
+      retries: 5
+
+  space-app:
+    ports:
+      - "9595:9595"
+    depends_on:
+      space-db:
+        condition: service_healthy
+    environment:
+      - JDBC_URL=jdbc:postgresql://space-db:5432/spacedb
+      - JDBC_USERNAME=spacedbpguser
+      - JDBC_PASSWORD=password
+      - R2DBC_DB_NAME=spacedb
+      - R2DBC_DB_HOST=space-db
+      - R2DBC_DB_PORT=5432
+      - JWT_GENERATOR_SIGNATURE_SECRET=secret
+    build:
+      context: ../saas-space-impl/target
+      dockerfile: Dockerfile

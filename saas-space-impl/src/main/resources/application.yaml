@@ -20,17 +20,25 @@ micronaut:
         mapping=/swagger-ui/**
         paths=classpath\:META-INF/swagger/views/swagger-ui
 
+datasources:
+  default:
+    url: ${JDBC_URL:`jdbc:postgresql://localhost:5432/spacedb`}
+    username: ${JDBC_USERNAME:spacedbpguser}
+    password: ${JDBC_PASSWORD:password}
+    driver-class-name: org.postgresql.Driver
+    dialect: POSTGRES
+
 r2dbc:
   datasources:
     default:
-#      driverClassName: io.r2dbc:r2dbc-postgresql
       db-type: postgresql
+      driverClassName: io.r2dbc:r2dbc-postgresql
       driver: postgresql
-      database: spacedb
-      host: localhost
-      port: 5432
-      username: spacedbpguser
-      password: password
+      database: ${R2DBC_DB_NAME:spacedb}
+      host: ${R2DBC_DB_HOST:localhost}
+      port: ${R2DBC_DB_PORT:5432}
+      username: ${JDBC_USERNAME:spacedbpguser}
+      password: ${JDBC_PASSWORD:password}
       options:
         autoCommit: true
         maxSize: 5
@@ -41,9 +49,17 @@ r2dbc:
         maxAcquireTime: PT6S
         poolName: r2dbc-pool
         registerJmx: true
+
 jooq:
   r2dbc-datasources:
     sql-dialect: POSTGRES
+
+liquibase:
+  datasources:
+    default:
+      enabled: true
+      change-log: 'classpath:master.yaml'
+
 
 
 

@@ -22,8 +22,8 @@
     </modules>
 
     <properties>
-        <jdk.version>21</jdk.version>
-        <release.version>21</release.version>
+        <jdk.version>17</jdk.version>
+        <release.version>17</release.version>
         <micronaut.runtime>netty</micronaut.runtime>
         <micronaut.aot.packageName>name.svetov.aot.generated</micronaut.aot.packageName>
         <micronaut.aot.enabled>false</micronaut.aot.enabled>
@@ -41,6 +41,11 @@
         <r2dbc-pool.version>1.0.0.RELEASE</r2dbc-pool.version>
         <liquibase.version>4.25.0</liquibase.version>
         <jooq.version>3.19.1</jooq.version>
+        <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
+        <docker-maven-plugin.version>0.43.4</docker-maven-plugin.version>
+        <testcontainers.version>1.18.3</testcontainers.version>
+        <testcontainers-jooq-codegen-maven-plugin.version>0.0.3</testcontainers-jooq-codegen-maven-plugin.version>
+        <groovy-maven-plugin.version>2.1.1</groovy-maven-plugin.version>
         <snakeyaml.version>2.2</snakeyaml.version>
         <jakarta.validation-api.version>3.1.0-M1</jakarta.validation-api.version>
         <assertj-core.version>3.25.1</assertj-core.version>
@@ -49,6 +54,7 @@
         <junit-platform-engine.version>1.10.1</junit-platform-engine.version>
         <mockito-core.version>5.8.0</mockito-core.version>
         <log4j.version>2.20.0</log4j.version>
+
     </properties>
 
     <repositories>
@@ -161,6 +167,11 @@
                 <version>${jooq.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-meta</artifactId>
+                <version>${jooq.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-core</artifactId>
                 <version>${liquibase.version}</version>
@@ -206,6 +217,11 @@
                 <scope>runtime</scope>
             </dependency>
             <dependency>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>${liquibase.version}</version>
@@ -214,6 +230,26 @@
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-codegen-maven</artifactId>
                 <version>${jooq.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker-maven-plugin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.gmaven</groupId>
+                <artifactId>groovy-maven-plugin</artifactId>
+                <version>${groovy-maven-plugin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers</artifactId>
+                <version>${testcontainers.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-jooq-codegen-maven-plugin</artifactId>
+                <version>${testcontainers-jooq-codegen-maven-plugin.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.micronaut</groupId>

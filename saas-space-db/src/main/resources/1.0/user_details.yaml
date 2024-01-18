@@ -7,11 +7,11 @@ databaseChangeLog:
             sql: "CREATE TABLE user_details(
                           id UUID NOT NULL DEFAULT uuid_generate_v1(),
                           username VARCHAR(255) NOT NULL,
-                          secret UUID REFERENCES password(id),
+                          password UUID REFERENCES password(id),
                           first_name VARCHAR(255) NOT NULL,
                           last_name VARCHAR(255) NOT NULL,
                           email VARCHAR(255),
-                          age INT,
+                          birth_date DATE,
                           sex VARCHAR(12),
                           country VARCHAR(255),
                           city VARCHAR(255),

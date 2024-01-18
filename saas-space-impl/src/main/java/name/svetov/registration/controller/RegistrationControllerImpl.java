@@ -14,6 +14,6 @@ public class RegistrationControllerImpl implements RegistrationController {
 
     @Override
     public Mono<UserDetailsDto> register(RegistrationRq rq) {
-        return registrationWebAdapter.signup(rq);
+        return registrationWebAdapter.register(rq);
     }
 }

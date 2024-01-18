@@ -2,7 +2,7 @@ package name.svetov.registration.adapter;
 
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
-import name.svetov.registration.converter.RegistrationRqConverter;
+import name.svetov.registration.converter.RegistrationConverter;
 import name.svetov.registration.dto.RegistrationRq;
 import name.svetov.registration.service.RegistrationService;
 import name.svetov.userdetails.converter.UserDetailsConverter;
@@ -13,12 +13,12 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class RegistrationWebAdapterImpl implements RegistrationWebAdapter {
     private final RegistrationService registrationService;
-    private final RegistrationRqConverter signupConverter;
+    private final RegistrationConverter signupConverter;
     private final UserDetailsConverter userDetailsConverter;
 
     @Override
-    public Mono<UserDetailsDto> signup(RegistrationRq rq) {
-        return registrationService.signup(
+    public Mono<UserDetailsDto> register(RegistrationRq rq) {
+        return registrationService.register(
             signupConverter.convert(rq)
         ).map(userDetailsConverter::map);
     }

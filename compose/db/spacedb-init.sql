@@ -1,0 +1,4 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE DATABASE spacedb;
+CREATE USER spacedbpguser WITH PASSWORD 'password';
+ALTER USER spacedbpguser WITH SUPERUSER;
