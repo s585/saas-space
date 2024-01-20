@@ -10,7 +10,7 @@
         <version>0.1</version>
     </parent>
 
-    <artifactId>saas-space-impl</artifactId>
+    <artifactId>saas-space-app</artifactId>
     <packaging>docker</packaging>
 
     <properties>
@@ -198,6 +198,11 @@
             <plugin>
                 <groupId>io.micronaut.maven</groupId>
                 <artifactId>micronaut-maven-plugin</artifactId>
+                <configuration>
+                    <properties>
+
+                    </properties>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

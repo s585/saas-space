@@ -18,7 +18,7 @@
 
     <modules>
         <module>saas-space-db</module>
-        <module>saas-space-impl</module>
+        <module>saas-space-app</module>
     </modules>
 
     <properties>

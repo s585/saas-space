@@ -1,0 +1,112 @@
+{
+	"info": {
+		"_postman_id": "d373567a-8eae-4548-a863-654055b37cce",
+		"name": "SPACE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15196719",
+		"_collection_link": "https://dark-meadow-412558.postman.co/dark-meadow-412558/workspace/otus-space/collection/15196719-d373567a-8eae-4548-a863-654055b37cce?action=share&source=collection_link&creator=15196719"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"test4@test.com\",\n    \"firstName\": \"test4\",\n    \"lastName\": \"test4\",\n    \"rawPassword\": \"test123\",\n    \"birthDate\": \"1990-01-01\",\n    \"sex\": \"Male\",\n    \"country\": \"Russian Federation\",\n    \"city\": \"Magadan\",\n    \"hobbies\": [\"Hunting\", \"Fishing\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9595/v1/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9595",
+					"path": [
+						"v1",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getOneById",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJub25lIn0.eyJzdWIiOiJ0ZXN0NEB0ZXN0LmNvbSIsIm5iZiI6MTcwNTc3NzU5OSwicm9sZXMiOltdLCJpc3MiOiJzcGFjZSIsImV4cCI6MTcwNTc4MTE5OSwiaWF0IjoxNzA1Nzc3NTk5fQ.",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9595/v1/user/e3a60ce2-fbc2-4222-9ded-41debe9a418e",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9595",
+					"path": [
+						"v1",
+						"user",
+						"e3a60ce2-fbc2-4222-9ded-41debe9a418e"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"test4@test.com\",\n    \"password\": \"test123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9595/v1/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9595",
+					"path": [
+						"v1",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

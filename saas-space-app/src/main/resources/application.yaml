@@ -14,6 +14,10 @@ micronaut:
             generator:
               secret: ${JWT_GENERATOR_SIGNATURE_SECRET:secret}
               jws-algorithm: HS256
+    endpoints:
+      login:
+        enabled: true
+        path: /v1/login
   router:
     static-resources:
       swagger-ui:
