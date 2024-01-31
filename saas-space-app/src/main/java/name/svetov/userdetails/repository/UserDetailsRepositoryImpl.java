@@ -3,11 +3,13 @@ package name.svetov.userdetails.repository;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import name.svetov.userdetails.converter.UserDetailsRecordConverter;
+import name.svetov.userdetails.model.SearchUserCmd;
 import name.svetov.userdetails.model.UserDetails;
 import org.apache.commons.collections4.CollectionUtils;
 import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.generated.tables.records.UserDetailsRecord;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -58,6 +60,19 @@ public class UserDetailsRepositoryImpl implements UserDetailsRepository {
     public Mono<Boolean> add(UserDetails userDetails) {
         return Mono.from(insert(userDetails))
             .map(response -> response == 1);
+    }
+
+    @Override
+    public Flux<UserDetails> search(SearchUserCmd cmd) {
+        return Flux.from(
+                select()
+                    .where(
+                        USER_DETAILS.FIRST_NAME.like(cmd.getFirstName() + "%"),
+                        USER_DETAILS.LAST_NAME.like(cmd.getLastName() + "%")
+                    )
+                    .orderBy(USER_DETAILS.ID)
+            )
+            .map(recordConverter);
     }
 
     InsertSetMoreStep<UserDetailsRecord> insert(UserDetails userDetails) {

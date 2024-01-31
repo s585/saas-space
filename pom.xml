@@ -54,6 +54,8 @@
         <junit-platform-engine.version>1.10.1</junit-platform-engine.version>
         <mockito-core.version>5.8.0</mockito-core.version>
         <log4j.version>2.20.0</log4j.version>
+        <commons-csv.version>1.10.0</commons-csv.version>
+        <logback.version>1.4.14</logback.version>
 
     </properties>
 
@@ -211,6 +213,11 @@
                 <version>${lombok-mapstruct-binding.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-csv</artifactId>
+                <version>${commons-csv.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
                 <version>${snakeyaml.version}</version>
@@ -307,9 +314,13 @@
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
-                <version>1.4.14</version>
-                <scope>runtime</scope>
+                <version>${logback.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

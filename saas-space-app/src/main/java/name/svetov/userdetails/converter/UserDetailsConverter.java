@@ -1,9 +1,12 @@
 package name.svetov.userdetails.converter;
 
+import name.svetov.userdetails.dto.SearchUserRq;
 import name.svetov.userdetails.dto.UserDetailsDto;
+import name.svetov.userdetails.model.SearchUserCmd;
 import name.svetov.userdetails.model.UserDetails;
 import org.mapstruct.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Mapper(
@@ -21,4 +24,7 @@ public interface UserDetailsConverter {
 
     UserDetailsDto map(UserDetails source);
 
+    List<UserDetailsDto> map(List<UserDetails> source);
+
+    SearchUserCmd map(SearchUserRq source);
 }

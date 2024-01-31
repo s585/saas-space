@@ -45,9 +45,9 @@ r2dbc:
       password: ${JDBC_PASSWORD:password}
       options:
         autoCommit: true
-        maxSize: 5
+        maxSize: 10
         protocol: postgres
-        initialSize: 1
+        initialSize: 5
         maxLifeTime: PT280S
         maxIdleTime: PT60S
         maxAcquireTime: PT6S

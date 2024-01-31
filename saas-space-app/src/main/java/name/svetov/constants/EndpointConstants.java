@@ -8,4 +8,5 @@ public final class EndpointConstants {
     public static final String V1 = "/v1";
     public static final String REGISTRATION_ENDPOINT = V1 + "/register";
     public static final String USER_ENDPOINT = V1 + "/user";
+    public static final String SEARCH_USER_ENDPOINT = USER_ENDPOINT + "/search";
 }
