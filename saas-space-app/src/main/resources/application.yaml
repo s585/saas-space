@@ -33,27 +33,27 @@ datasources:
     driver-class-name: org.postgresql.Driver
     dialect: POSTGRES
 
-r2dbc:
-  datasources:
-    default:
-      db-type: postgresql
-      driverClassName: io.r2dbc:r2dbc-postgresql
-      driver: postgresql
-      database: ${R2DBC_DB_NAME:spacedb}
-      host: ${R2DBC_DB_HOST:localhost}
-      port: ${R2DBC_DB_PORT:5432}
-      username: ${JDBC_USERNAME:spacedbpguser}
-      password: ${JDBC_PASSWORD:password}
-      options:
-        autoCommit: true
-        maxSize: 10
-        protocol: postgres
-        initialSize: 5
-        maxLifeTime: PT280S
-        maxIdleTime: PT60S
-        maxAcquireTime: PT6S
-        poolName: r2dbc-pool
-        registerJmx: true
+#r2dbc:
+#  datasources:
+#    default:
+#      db-type: postgresql
+#      driverClassName: io.r2dbc:r2dbc-postgresql
+#      driver: postgresql
+#      database: ${R2DBC_DB_NAME:spacedb}
+#      host: ${R2DBC_DB_HOST:localhost}
+#      port: ${R2DBC_DB_PORT:5432}
+#      username: ${JDBC_USERNAME:spacedbpguser}
+#      password: ${JDBC_PASSWORD:password}
+#      options:
+#        autoCommit: true
+#        maxSize: 20
+#        protocol: postgres
+#        initialSize: 10
+#        maxLifeTime: PT280S
+#        maxIdleTime: PT60S
+#        maxAcquireTime: PT6S
+#        poolName: r2dbc-pool
+#        registerJmx: true
 
 jooq:
   r2dbc-datasources:
