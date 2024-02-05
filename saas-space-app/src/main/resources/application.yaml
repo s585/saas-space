@@ -1,6 +1,7 @@
 micronaut:
   application:
     name: space
+    type: blocking
   server:
     port: 9595
   security:

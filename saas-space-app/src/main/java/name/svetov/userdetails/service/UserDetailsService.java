@@ -2,19 +2,18 @@ package name.svetov.userdetails.service;
 
 import name.svetov.userdetails.model.SearchUserCmd;
 import name.svetov.userdetails.model.UserDetails;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface UserDetailsService {
-    Mono<UserDetails> getOneById(UUID userDetailsId);
+    UserDetails getOneById(UUID userDetailsId);
 
-    Mono<UserDetails> getOneByUsername(String username);
+    UserDetails getOneByUsername(String username);
 
-    Mono<Boolean> existsByUsername(String username);
+    boolean existsByUsername(String username);
 
-    Mono<UserDetails> create(UserDetails userDetails);
+    UserDetails create(UserDetails userDetails);
 
-    Flux<UserDetails> search(SearchUserCmd map);
+    List<UserDetails> search(SearchUserCmd map);
 }

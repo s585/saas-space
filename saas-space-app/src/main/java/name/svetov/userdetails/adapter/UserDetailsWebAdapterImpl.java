@@ -6,9 +6,8 @@ import name.svetov.userdetails.converter.UserDetailsConverter;
 import name.svetov.userdetails.dto.SearchUserRq;
 import name.svetov.userdetails.dto.UserDetailsDto;
 import name.svetov.userdetails.service.UserDetailsService;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.UUID;
 
 @Singleton
@@ -18,14 +17,12 @@ public class UserDetailsWebAdapterImpl implements UserDetailsWebAdapter {
     private final UserDetailsConverter converter;
 
     @Override
-    public Mono<UserDetailsDto> getOneById(UUID userDetailsId) {
-        return userDetailsService.getOneById(userDetailsId)
-            .map(converter::map);
+    public UserDetailsDto getOneById(UUID userDetailsId) {
+        return converter.map(userDetailsService.getOneById(userDetailsId));
     }
 
     @Override
-    public Flux<UserDetailsDto> search(SearchUserRq rq) {
-        return userDetailsService.search(converter.map(rq))
-            .map(converter::map);
+    public List<UserDetailsDto> search(SearchUserRq rq) {
+        return converter.map(userDetailsService.search(converter.map(rq)));
     }
 }

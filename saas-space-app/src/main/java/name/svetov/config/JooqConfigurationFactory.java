@@ -3,7 +3,6 @@ package name.svetov.config;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.r2dbc.spi.ConnectionFactory;
-import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
@@ -22,14 +21,14 @@ public class JooqConfigurationFactory {
         var jooqConfiguration = new DefaultConfiguration();
         jooqConfiguration.settings().setRenderSchema(false);
         jooqConfiguration.settings().setRenderQuotedNames(RenderQuotedNames.NEVER);
-        jooqConfiguration.settings().setExecuteWithOptimisticLocking(false);
+        jooqConfiguration.settings().setExecuteWithOptimisticLocking(true);
         jooqConfiguration.setSQLDialect(SQLDialect.POSTGRES);
         jooqConfiguration.set(connectionFactory);
         return jooqConfiguration;
     }
 
     @Bean
-    @Named("r2dbc")
+//    @Named("r2dbc")
     public DSLContext dslContext() {
         return new DefaultDSLContext(configuration());
     }

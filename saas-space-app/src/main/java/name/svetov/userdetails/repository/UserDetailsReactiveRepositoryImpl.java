@@ -1,5 +1,7 @@
 package name.svetov.userdetails.repository;
 
+import io.micronaut.context.annotation.Requires;
+import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import name.svetov.userdetails.converter.UserDetailsRecordConverter;
 import name.svetov.userdetails.model.SearchUserCmd;
@@ -8,9 +10,11 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.generated.tables.records.UserDetailsRecord;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
-import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -19,53 +23,58 @@ import static org.jooq.generated.Tables.PASSWORD;
 import static org.jooq.generated.Tables.USER_DETAILS;
 
 @Singleton
-public class UserDetailsRepositoryImpl implements UserDetailsRepository {
+@Requires(property = "micronaut.application.type", value = "reactive")
+public class UserDetailsReactiveRepositoryImpl implements UserDetailsReactiveRepository {
     private final DSLContext context;
     private final UserDetailsRecordConverter recordConverter;
 
-    public UserDetailsRepositoryImpl(DSLContext context, UserDetailsRecordConverter recordConverter) {
+    public UserDetailsReactiveRepositoryImpl(@Named("r2dbc") DSLContext context, UserDetailsRecordConverter recordConverter) {
         this.context = context;
         this.recordConverter = recordConverter;
     }
 
     @Override
-    public UserDetails getOneById(UUID userDetailsId) {
-        return select()
-            .where(USER_DETAILS.ID.eq(userDetailsId))
-            .fetchOne(recordConverter);
-    }
-
-    @Override
-    public UserDetails getOneByUsername(String username) {
-        return select()
-            .where(USER_DETAILS.USERNAME.eq(username))
-            .fetchOne(recordConverter);
-
-    }
-
-    @Override
-    public boolean existsByUsername(String username) {
-        return context.fetchExists(
-            select()
-                .where(USER_DETAILS.USERNAME.eq(username))
-        );
-    }
-
-    @Override
-    public boolean add(UserDetails userDetails) {
-        return insert(userDetails)
-            .execute() == 1;
-    }
-
-    @Override
-    public List<UserDetails> search(SearchUserCmd cmd) {
-        return select()
-            .where(
-                USER_DETAILS.FIRST_NAME.like(cmd.getFirstName() + "%"),
-                USER_DETAILS.LAST_NAME.like(cmd.getLastName() + "%")
+    public Mono<UserDetails> getOneById(UUID userDetailsId) {
+        return Mono.from(
+                select()
+                    .where(USER_DETAILS.ID.eq(userDetailsId))
             )
-            .orderBy(USER_DETAILS.ID)
-            .fetch(recordConverter);
+            .map(recordConverter);
+    }
+
+    @Override
+    public Mono<UserDetails> getOneByUsername(String username) {
+        return Mono.from(
+                select()
+                    .where(USER_DETAILS.USERNAME.eq(username))
+            )
+            .map(recordConverter);
+    }
+
+    @Override
+    public Mono<Boolean> existsByUsername(String username) {
+        return getOneByUsername(username)
+            .map(Objects::nonNull)
+            .switchIfEmpty(Mono.just(false));
+    }
+
+    @Override
+    public Mono<Boolean> add(UserDetails userDetails) {
+        return Mono.from(insert(userDetails))
+            .map(response -> response == 1);
+    }
+
+    @Override
+    public Flux<UserDetails> search(SearchUserCmd cmd) {
+        return Flux.from(
+                select()
+                    .where(
+                        USER_DETAILS.FIRST_NAME.like(cmd.getFirstName() + "%"),
+                        USER_DETAILS.LAST_NAME.like(cmd.getLastName() + "%")
+                    )
+                    .orderBy(USER_DETAILS.ID)
+            )
+            .map(recordConverter);
     }
 
     InsertSetMoreStep<UserDetailsRecord> insert(UserDetails userDetails) {
@@ -111,3 +120,4 @@ public class UserDetailsRepositoryImpl implements UserDetailsRepository {
         );
     }
 }
+

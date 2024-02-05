@@ -2,19 +2,18 @@ package name.svetov.userdetails.repository;
 
 import name.svetov.userdetails.model.SearchUserCmd;
 import name.svetov.userdetails.model.UserDetails;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface UserDetailsRepository {
-    Mono<UserDetails> getOneById(UUID userDetailsId);
+    UserDetails getOneById(UUID userDetailsId);
 
-    Mono<UserDetails> getOneByUsername(String username);
+    UserDetails getOneByUsername(String username);
 
-    Mono<Boolean> existsByUsername(String username);
+    boolean existsByUsername(String username);
 
-    Mono<Boolean> add(UserDetails userDetails);
+    boolean add(UserDetails userDetails);
 
-    Flux<UserDetails> search(SearchUserCmd cmd);
+    List<UserDetails> search(SearchUserCmd cmd);
 }

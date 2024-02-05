@@ -1,25 +1,26 @@
 package name.svetov.authentication;
 
+import io.micronaut.context.annotation.Requires;
 import io.micronaut.security.authentication.AuthenticationProvider;
 import io.micronaut.security.authentication.AuthenticationRequest;
 import io.micronaut.security.authentication.AuthenticationResponse;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
-import name.svetov.userdetails.service.UserDetailsService;
+import name.svetov.userdetails.service.UserDetailsReactiveService;
 import org.reactivestreams.Publisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import reactor.core.publisher.Mono;
 
 @Singleton
+@Requires(property = "micronaut.application.type", value = "reactive")
 @RequiredArgsConstructor
-public class PasswordAuthenticationProvider<T> implements AuthenticationProvider<T> {
-    private final UserDetailsService userDetailsService;
+public class PasswordAuthenticationReactiveProvider<T> implements AuthenticationProvider<T> {
+    private final UserDetailsReactiveService userDetailsReactiveService;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public Publisher<AuthenticationResponse> authenticate(T httpRequest, AuthenticationRequest<?, ?> authenticationRequest) {
         var identity = String.valueOf(authenticationRequest.getIdentity());
-        return Mono.just(userDetailsService.getOneByUsername(identity))
+        return userDetailsReactiveService.getOneByUsername(identity)
             .mapNotNull(userDetails -> {
                 if (passwordMatches(authenticationRequest.getSecret(), userDetails.getPassword().getSecret())) {
                     return AuthenticationResponse.success(identity);

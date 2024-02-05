@@ -8,11 +8,11 @@
         </layout>
     </appender>
 
-    <logger name="name.svetov" level="error" additivity="false">
+    <logger name="name.svetov" level="debug" additivity="false">
         <appender-ref ref="CONSOLE"/>
     </logger>
 
-    <root level="error">
+    <root level="debug">
         <appender-ref ref="CONSOLE"/>
     </root>
 

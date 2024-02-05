@@ -5,15 +5,14 @@ import lombok.RequiredArgsConstructor;
 import name.svetov.registration.adapter.RegistrationWebAdapter;
 import name.svetov.registration.dto.RegistrationRq;
 import name.svetov.userdetails.dto.UserDetailsDto;
-import reactor.core.publisher.Mono;
 
 @Controller
 @RequiredArgsConstructor
 public class RegistrationControllerImpl implements RegistrationController {
-    private final RegistrationWebAdapter registrationWebAdapter;
+    private final RegistrationWebAdapter registrationWebReactiveAdapter;
 
     @Override
-    public Mono<UserDetailsDto> register(RegistrationRq rq) {
-        return registrationWebAdapter.register(rq);
+    public UserDetailsDto register(RegistrationRq rq) {
+        return registrationWebReactiveAdapter.register(rq);
     }
 }
