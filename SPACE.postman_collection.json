@@ -4,7 +4,7 @@
 		"name": "SPACE",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "15196719",
-		"_collection_link": "https://dark-meadow-412558.postman.co/dark-meadow-412558/workspace/otus-space/collection/15196719-d373567a-8eae-4548-a863-654055b37cce?action=share&source=collection_link&creator=15196719"
+		"_collection_link": "https://dark-meadow-412558.postman.co/dark-meadow-412558/workspace/OTUS-SPACE~5e195d30-78df-4d98-ac1d-a2a010fc9c65/collection/15196719-d373567a-8eae-4548-a863-654055b37cce?action=share&source=collection_link&creator=15196719"
 	},
 	"item": [
 		{
@@ -74,6 +74,46 @@
 						"v1",
 						"user",
 						"e3a60ce2-fbc2-4222-9ded-41debe9a418e"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "searchUsers",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJub25lIn0.eyJzdWIiOiJ0ZXN0NEB0ZXN0LmNvbSIsIm5iZiI6MTcwNTc3NzU5OSwicm9sZXMiOltdLCJpc3MiOiJzcGFjZSIsImV4cCI6MTcwNTc4MTE5OSwiaWF0IjoxNzA1Nzc3NTk5fQ.",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\":\"Александр\",\n    \"lastName\":\"Ар\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9595/v1/user/search",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9595",
+					"path": [
+						"v1",
+						"user",
+						"search"
 					]
 				}
 			},
