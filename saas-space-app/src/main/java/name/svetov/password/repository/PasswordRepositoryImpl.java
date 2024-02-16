@@ -1,5 +1,6 @@
 package name.svetov.password.repository;
 
+import io.micronaut.context.annotation.Requires;
 import jakarta.inject.Singleton;
 import name.svetov.password.model.Password;
 import org.jooq.DSLContext;
@@ -11,6 +12,7 @@ import java.time.OffsetDateTime;
 import static org.jooq.generated.Tables.PASSWORD;
 
 @Singleton
+@Requires(property = "micronaut.application.type", value = "blocking")
 public class PasswordRepositoryImpl implements PasswordRepository {
     private final DSLContext context;
 

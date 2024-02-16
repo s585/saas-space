@@ -1,5 +1,6 @@
 package name.svetov.userdetails.adapter;
 
+import io.micronaut.context.annotation.Requires;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import name.svetov.userdetails.converter.UserDetailsConverter;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Singleton
+@Requires(property = "micronaut.application.type", value = "blocking")
 @RequiredArgsConstructor
 public class UserDetailsWebAdapterImpl implements UserDetailsWebAdapter {
     private final UserDetailsService userDetailsService;

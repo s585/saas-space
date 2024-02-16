@@ -1,5 +1,6 @@
 package name.svetov.authentication;
 
+import io.micronaut.context.annotation.Requires;
 import io.micronaut.security.authentication.AuthenticationProvider;
 import io.micronaut.security.authentication.AuthenticationRequest;
 import io.micronaut.security.authentication.AuthenticationResponse;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import reactor.core.publisher.Mono;
 
 @Singleton
+@Requires(property = "micronaut.application.type", value = "blocking")
 @RequiredArgsConstructor
 public class PasswordAuthenticationProvider<T> implements AuthenticationProvider<T> {
     private final UserDetailsService userDetailsService;

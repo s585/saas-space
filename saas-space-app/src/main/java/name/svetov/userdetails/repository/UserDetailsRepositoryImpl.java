@@ -1,5 +1,6 @@
 package name.svetov.userdetails.repository;
 
+import io.micronaut.context.annotation.Requires;
 import jakarta.inject.Singleton;
 import name.svetov.userdetails.converter.UserDetailsRecordConverter;
 import name.svetov.userdetails.model.SearchUserCmd;
@@ -19,6 +20,7 @@ import static org.jooq.generated.Tables.PASSWORD;
 import static org.jooq.generated.Tables.USER_DETAILS;
 
 @Singleton
+@Requires(property = "micronaut.application.type", value = "blocking")
 public class UserDetailsRepositoryImpl implements UserDetailsRepository {
     private final DSLContext context;
     private final UserDetailsRecordConverter recordConverter;

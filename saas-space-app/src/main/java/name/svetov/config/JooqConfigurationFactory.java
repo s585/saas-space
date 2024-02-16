@@ -3,6 +3,7 @@ package name.svetov.config;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.r2dbc.spi.ConnectionFactory;
+import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
@@ -28,7 +29,7 @@ public class JooqConfigurationFactory {
     }
 
     @Bean
-//    @Named("r2dbc")
+    @Named("r2dbc")
     public DSLContext dslContext() {
         return new DefaultDSLContext(configuration());
     }

@@ -1,5 +1,6 @@
 package name.svetov.userdetails.controller;
 
+import io.micronaut.context.annotation.Requires;
 import io.micronaut.http.annotation.Controller;
 import lombok.RequiredArgsConstructor;
 import name.svetov.userdetails.adapter.UserDetailsWebAdapter;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Controller
+@Requires(property = "micronaut.application.type", value = "blocking")
 @RequiredArgsConstructor
 public class UserDetailsControllerImpl implements UserDetailsController {
     private final UserDetailsWebAdapter webAdapter;

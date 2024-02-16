@@ -1,5 +1,6 @@
 package name.svetov.userdetails.service;
 
+import io.micronaut.context.annotation.Requires;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import name.svetov.userdetails.model.SearchUserCmd;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Singleton
+@Requires(property = "micronaut.application.type", value = "blocking")
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 

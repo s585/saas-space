@@ -1,5 +1,6 @@
 package name.svetov.registration.service;
 
+import io.micronaut.context.annotation.Requires;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import name.svetov.exception.UserAlreadyExistsException;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
 
 @Singleton
+@Requires(property = "micronaut.application.type", value = "blocking")
 @RequiredArgsConstructor
 public class RegistrationServiceImpl implements RegistrationService {
     private final UserDetailsService userDetailsService;
