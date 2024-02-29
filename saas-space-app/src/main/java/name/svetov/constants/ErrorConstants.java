@@ -8,4 +8,6 @@ public final class ErrorConstants {
     public static final String OBJECT_NOT_FOUND_BY_ID_ERROR_CODE = "global.object_not_found_by_id_error";
     public static final String OBJECT_NOT_FOUND_BY_NAME_ERROR_CODE = "global.object_not_found_by_name_error";
     public static final String USER_ALREADY_EXISTS_ERROR_CODE = "registration.user_already_exists_error";
+    public static final String SERIALIZATION_FAILURE_ERROR_CODE = "system.serialization_failure";
+    public static final String DESERIALIZATION_FAILURE_ERROR_CODE = "system.deserialization_failure";
 }

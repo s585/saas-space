@@ -1,30 +1,31 @@
 package name.svetov.userdetails.adapter;
 
-import io.micronaut.context.annotation.Requires;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import name.svetov.userdetails.converter.UserDetailsConverter;
 import name.svetov.userdetails.dto.SearchUserRq;
 import name.svetov.userdetails.dto.UserDetailsDto;
 import name.svetov.userdetails.service.UserDetailsService;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.util.List;
 import java.util.UUID;
 
 @Singleton
-@Requires(property = "micronaut.application.type", value = "blocking")
 @RequiredArgsConstructor
 public class UserDetailsWebAdapterImpl implements UserDetailsWebAdapter {
     private final UserDetailsService userDetailsService;
     private final UserDetailsConverter converter;
 
     @Override
-    public UserDetailsDto getOneById(UUID userDetailsId) {
-        return converter.map(userDetailsService.getOneById(userDetailsId));
+    public Mono<UserDetailsDto> getOneById(UUID userDetailsId) {
+        return Mono.from(userDetailsService.getOneById(userDetailsId))
+            .map(converter::map);
     }
 
     @Override
-    public List<UserDetailsDto> search(SearchUserRq rq) {
-        return converter.map(userDetailsService.search(converter.map(rq)));
+    public Flux<UserDetailsDto> search(SearchUserRq rq) {
+        return Flux.from(userDetailsService.search(converter.map(rq)))
+            .map(converter::map);
     }
 }

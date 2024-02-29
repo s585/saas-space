@@ -5,10 +5,13 @@ import org.mapstruct.MapperConfig;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 
+import java.util.UUID;
+
 @MapperConfig(
     componentModel = MappingConstants.ComponentModel.JAKARTA,
     injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-    unmappedTargetPolicy = ReportingPolicy.ERROR
+    unmappedTargetPolicy = ReportingPolicy.ERROR,
+    imports = UUID.class
 )
 public interface SaasMapperDefaultConfig {
 }

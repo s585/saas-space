@@ -7,21 +7,21 @@ import io.micronaut.security.rules.SecurityRule;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import name.svetov.userdetails.dto.SearchUserRq;
 import name.svetov.userdetails.dto.UserDetailsDto;
+import org.reactivestreams.Publisher;
 
-import java.util.List;
 import java.util.UUID;
 
+import static name.svetov.constants.EndpointConstants.GET_USER_ENDPOINT;
 import static name.svetov.constants.EndpointConstants.SEARCH_USER_ENDPOINT;
-import static name.svetov.constants.EndpointConstants.USER_ENDPOINT;
 
 public interface UserDetailsController {
     @Secured(SecurityRule.IS_AUTHENTICATED)
     @Produces(MediaType.APPLICATION_JSON)
-    @Get(USER_ENDPOINT + "/{userDetailsId}")
-    UserDetailsDto getOneById(@PathVariable("userDetailsId") UUID userDetailsId);
+    @Get(GET_USER_ENDPOINT + "/{userDetailsId}")
+    Publisher<UserDetailsDto> getOneById(@PathVariable("userDetailsId") UUID userDetailsId);
 
-    @Secured(SecurityRule.IS_ANONYMOUS)
+    @Secured(SecurityRule.IS_AUTHENTICATED)
     @Produces(MediaType.APPLICATION_JSON)
     @Post(SEARCH_USER_ENDPOINT)
-    List<UserDetailsDto> search(@Body @RequestBody SearchUserRq rq);
+    Publisher<UserDetailsDto> search(@Body @RequestBody SearchUserRq rq);
 }

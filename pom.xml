@@ -22,8 +22,8 @@
     </modules>
 
     <properties>
-        <jdk.version>17</jdk.version>
-        <release.version>17</release.version>
+        <jdk.version>21</jdk.version>
+        <release.version>21</release.version>
         <micronaut.runtime>netty</micronaut.runtime>
         <micronaut.aot.packageName>name.svetov.aot.generated</micronaut.aot.packageName>
         <micronaut.aot.enabled>false</micronaut.aot.enabled>
@@ -41,6 +41,7 @@
         <r2dbc-pool.version>1.0.0.RELEASE</r2dbc-pool.version>
         <liquibase.version>4.25.0</liquibase.version>
         <jooq.version>3.19.1</jooq.version>
+        <jib-maven-plugin.version>3.4.0</jib-maven-plugin.version>
         <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
         <docker-maven-plugin.version>0.43.4</docker-maven-plugin.version>
         <testcontainers.version>1.18.3</testcontainers.version>
@@ -432,6 +433,11 @@
                             <arg>-Amicronaut.processing.module=space</arg>
                         </compilerArgs>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.google.cloud.tools</groupId>
+                    <artifactId>jib-maven-plugin</artifactId>
+                    <version>${jib-maven-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

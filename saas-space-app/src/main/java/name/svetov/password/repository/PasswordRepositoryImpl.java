@@ -1,32 +1,33 @@
 package name.svetov.password.repository;
 
-import io.micronaut.context.annotation.Requires;
+import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import name.svetov.password.model.Password;
 import org.jooq.DSLContext;
 import org.jooq.InsertSetMoreStep;
 import org.jooq.generated.tables.records.PasswordRecord;
+import org.reactivestreams.Publisher;
+import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 
 import static org.jooq.generated.Tables.PASSWORD;
 
 @Singleton
-@Requires(property = "micronaut.application.type", value = "blocking")
 public class PasswordRepositoryImpl implements PasswordRepository {
     private final DSLContext context;
 
-    public PasswordRepositoryImpl(DSLContext context) {
+    public PasswordRepositoryImpl(@Named("r2dbc") DSLContext context) {
         this.context = context;
     }
 
     @Override
-    public boolean add(Password password) {
-        return insert(password)
-            .execute() == 1;
+    public Publisher<Boolean> add(Password password) {
+        return Mono.from(insert(password))
+            .map(response -> response == 1);
     }
 
-    InsertSetMoreStep<PasswordRecord> insert(Password password) {
+    private InsertSetMoreStep<PasswordRecord> insert(Password password) {
         var now = OffsetDateTime.now();
         return context.insertInto(PASSWORD)
             .set(PASSWORD.ID, password.getId())

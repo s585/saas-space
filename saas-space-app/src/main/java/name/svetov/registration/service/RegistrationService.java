@@ -2,7 +2,8 @@ package name.svetov.registration.service;
 
 import name.svetov.registration.model.RegistrationCmd;
 import name.svetov.userdetails.model.UserDetails;
+import org.reactivestreams.Publisher;
 
 public interface RegistrationService {
-    UserDetails register(RegistrationCmd cmd);
+    Publisher<UserDetails> register(RegistrationCmd cmd);
 }

@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20240216_post
+      author: asvetov
+      changes:
+        - sql:
+            sql: "CREATE TABLE post(
+                          id UUID NOT NULL DEFAULT uuid_generate_v1(),
+                          author_id UUID NOT NULL,
+                          body TEXT,
+                          created_date TIMESTAMP WITH TIME ZONE,
+                          updated_date TIMESTAMP WITH TIME ZONE,
+                          PRIMARY KEY (id)
+                 );"

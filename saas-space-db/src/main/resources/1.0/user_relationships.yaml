@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20240218_user_relationships
+      author: asvetov
+      changes:
+        - sql:
+            sql: "CREATE TABLE user_relationships(
+                          id UUID NOT NULL DEFAULT uuid_generate_v1(),
+                          user_id_left UUID NOT NULL,
+                          user_id_right UUID NOT NULL,
+                          type VARCHAR(255) NOT NULL,
+                          created_date TIMESTAMP WITH TIME ZONE,
+                          updated_date TIMESTAMP WITH TIME ZONE,
+                          PRIMARY KEY (id),
+                          CONSTRAINT friend_unique UNIQUE (user_id_left, user_id_right, type)
+                 );"

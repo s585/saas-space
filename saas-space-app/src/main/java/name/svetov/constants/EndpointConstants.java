@@ -5,12 +5,18 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class EndpointConstants {
-    public static final String V1 = "/v1";
-    public static final String REACTIVE = "/reactive";
-    public static final String REGISTRATION_ENDPOINT = V1 + "/register";
-    public static final String USER_ENDPOINT = V1 + "/user";
+    public static final String REGISTRATION_ENDPOINT = "/register";
+    public static final String USER_ENDPOINT = "/user";
+    public static final String GET_USER_ENDPOINT = USER_ENDPOINT + "/get";
     public static final String SEARCH_USER_ENDPOINT = USER_ENDPOINT + "/search";
-    public static final String REGISTRATION_REACTIVE_ENDPOINT = REACTIVE + "/register";
-    public static final String USER_REACTIVE_ENDPOINT = REACTIVE + "/user";
-    public static final String SEARCH_USER_REACTIVE_ENDPOINT = USER_REACTIVE_ENDPOINT + "/search";
+    public static final String RELATIONSHIPS_ENDPOINT = "/relationships";
+    public static final String FRIEND_ENDPOINT = RELATIONSHIPS_ENDPOINT + "/friend";
+    public static final String ADD_FRIEND_ENDPOINT = FRIEND_ENDPOINT + "/add";
+    public static final String DELETE_FRIEND_ENDPOINT = FRIEND_ENDPOINT + "/delete";
+    public static final String POST_ENDPOINT = "/post";
+    public static final String GET_POST_ENDPOINT = POST_ENDPOINT + "/get";
+    public static final String CREATE_POST_ENDPOINT = POST_ENDPOINT + "/create";
+    public static final String UPDATE_POST_ENDPOINT = POST_ENDPOINT + "/update";
+    public static final String DELETE_POST_ENDPOINT = POST_ENDPOINT + "/delete";
+    public static final String POST_TIMELINE_ENDPOINT = POST_ENDPOINT + "/timeline";
 }

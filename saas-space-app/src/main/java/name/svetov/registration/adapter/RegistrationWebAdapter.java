@@ -2,7 +2,8 @@ package name.svetov.registration.adapter;
 
 import name.svetov.registration.dto.RegistrationRq;
 import name.svetov.userdetails.dto.UserDetailsDto;
+import org.reactivestreams.Publisher;
 
 public interface RegistrationWebAdapter {
-    UserDetailsDto register(RegistrationRq rq);
+    Publisher<UserDetailsDto> register(RegistrationRq rq);
 }

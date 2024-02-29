@@ -5,3 +5,9 @@ databaseChangeLog:
       file: 1.0/password.yaml
   - include:
       file: 1.0/user_details.yaml
+  - include:
+      file: 1.0/refresh_token.yaml
+  - include:
+      file: 1.0/post.yaml
+  - include:
+      file: 1.0/user_relationships.yaml

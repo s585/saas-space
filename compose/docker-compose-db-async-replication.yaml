@@ -1,0 +1,122 @@
+version: '3.9'
+x-postgres_common: &postgres_common
+  image: bitnami/postgresql:16.1.0
+  restart: always
+  healthcheck:
+    test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+    interval: 2s
+    timeout: 2s
+    retries: 5
+  networks:
+    - space-app-network
+
+services:
+  pg_il2:
+    <<: *postgres_common
+    ports:
+      - "15432:5432"
+    volumes:
+      - ./db/init_scripts:/docker-entrypoint-initdb.d
+      - ./db/volumes/pg_il2_data:/bitnami/postgresql
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRESQL_REPLICATION_MODE=master
+      - POSTGRESQL_REPLICATION_USER=replicator
+      - POSTGRESQL_REPLICATION_PASSWORD=password
+
+  pg_mig31:
+    <<: *postgres_common
+    ports:
+      - "25432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRESQL_MASTER_HOST=pg_il2
+      - POSTGRESQL_MASTER_PORT_NUMBER=5432
+      - POSTGRESQL_REPLICATION_MODE=slave
+      - POSTGRESQL_REPLICATION_USER=replicator
+      - POSTGRESQL_REPLICATION_PASSWORD=password
+      - POSTGRESQL_CLUSTER_APP_NAME=pg_mig31
+
+  pg_su25:
+    <<: *postgres_common
+    ports:
+      - "35432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRESQL_MASTER_HOST=pg_il2
+      - POSTGRESQL_MASTER_PORT_NUMBER=5432
+      - POSTGRESQL_REPLICATION_MODE=slave
+      - POSTGRESQL_REPLICATION_USER=replicator
+      - POSTGRESQL_REPLICATION_PASSWORD=password
+      - POSTGRESQL_CLUSTER_APP_NAME=pg_su25
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4:8.1
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=postgres@yandex.ru
+      - PGADMIN_DEFAULT_PASSWORD=password
+      - PGADMIN_CONFIG_SERVER_MODE=False
+    volumes:
+      - ./db/volumes/backup:/backup
+    ports:
+      - "5050:5050"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1G
+    networks:
+      - space-app-network
+
+  redis:
+    image: redis:7.2.4-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./db/volumes/redis_data:/data
+    networks:
+      - space-app-network
+
+  rabbitmq:
+    image: rabbitmq:3.13.0-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=rabbitmq
+      - RABBITMQ_DEFAULT_PASS=rabbitmq
+    networks:
+      - space-app-network
+
+  space_app:
+    image: saas-space-app:latest
+    ports:
+      - "9595:9595"
+    depends_on:
+      pg_il2:
+        condition: service_healthy
+    environment:
+      - JDBC_URL=jdbc:postgresql://pg_il2/spacedb
+      - R2DBC_URL=r2dbc:postgres://pg_il2/spacedb
+      - PG_USERNAME=postgres
+      - PG_PASSWORD=password
+      - REDIS_URI=redis://redis:6379
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - JWT_GENERATOR_SIGNATURE_SECRET=rczmnPI36GQlcyLlABpnv1Ci5aUx3ikFipejwsf3VRY=
+      - JWT_GENERATOR_REFRESH_TOKEN_SECRET=cTGWfbGmX4Onua7lYZ+VFYWJcL+c3fHiH7wbgRUeAro=
+    networks:
+      - space-app-network
+
+networks:
+  space-app-network:
+    driver: bridge
+
+volumes:
+  pg_il2_data:
+  redis_data:

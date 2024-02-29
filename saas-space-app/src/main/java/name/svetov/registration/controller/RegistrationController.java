@@ -9,6 +9,7 @@ import io.micronaut.security.rules.SecurityRule;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import name.svetov.registration.dto.RegistrationRq;
 import name.svetov.userdetails.dto.UserDetailsDto;
+import org.reactivestreams.Publisher;
 
 import static name.svetov.constants.EndpointConstants.REGISTRATION_ENDPOINT;
 
@@ -16,5 +17,5 @@ public interface RegistrationController {
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Produces(MediaType.APPLICATION_JSON)
     @Post(REGISTRATION_ENDPOINT)
-    UserDetailsDto register(@Body @RequestBody RegistrationRq rq);
+    Publisher<UserDetailsDto> register(@Body @RequestBody RegistrationRq rq);
 }

@@ -4,7 +4,7 @@ import lombok.Getter;
 import org.apache.commons.lang3.ArrayUtils;
 
 @Getter
-public class AbstractSaasSpaceException extends RuntimeException{
+public abstract class AbstractSaasSpaceException extends RuntimeException{
     private final String code;
     private final Object[] params;
 

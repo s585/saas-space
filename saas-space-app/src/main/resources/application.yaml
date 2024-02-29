@@ -1,59 +1,84 @@
 micronaut:
   application:
     name: space
-    type: blocking
   server:
     port: 9595
+    netty:
+      worker:
+        threads: 4
+        event-loop-threads: 2
   security:
     enabled: true
     authentication: bearer
     token:
-      bearer:
+      jwt:
         enabled: true
         signatures:
           secret:
             generator:
               secret: ${JWT_GENERATOR_SIGNATURE_SECRET:secret}
               jws-algorithm: HS256
+        generator:
+          refresh-token:
+            secret: ${JWT_GENERATOR_REFRESH_TOKEN_SECRET:secret}
+            jws-algorithm: HS256
     endpoints:
       login:
         enabled: true
-        path: /v1/login
+        path: /login
   router:
     static-resources:
       swagger-ui:
         mapping=/swagger-ui/**
         paths=classpath\:META-INF/swagger/views/swagger-ui
+  executors:
+    default:
+      type: fixed
+      core-pool-size: 4
+      max-pool-size: 10
+      queue-size: 100
+      virtual: true
+    io:
+      type: cached
+      core-pool-size: 8
+      max-pool-size: 64
+      queue-size: 500
+      virtual: true
+    cpu:
+      type: fixed
+      core-pool-size: 16
+      max-pool-size: 32
+      queue-size: 1000
+      virtual: true
+  http:
+    client:
+      pool:
+        enabled: true
+        max-concurrent-http1-connections: 100
 
 datasources:
   default:
     url: ${JDBC_URL:`jdbc:postgresql://localhost:5432/spacedb`}
-    username: ${JDBC_USERNAME:spacedbpguser}
-    password: ${JDBC_PASSWORD:password}
+    username: ${PG_USERNAME:postgres}
+    password: ${PG_PASSWORD:password}
     driver-class-name: org.postgresql.Driver
     dialect: POSTGRES
 
-#r2dbc:
-#  datasources:
-#    default:
-#      db-type: postgresql
-#      driverClassName: io.r2dbc:r2dbc-postgresql
-#      driver: postgresql
-#      database: ${R2DBC_DB_NAME:spacedb}
-#      host: ${R2DBC_DB_HOST:localhost}
-#      port: ${R2DBC_DB_PORT:5432}
-#      username: ${JDBC_USERNAME:spacedbpguser}
-#      password: ${JDBC_PASSWORD:password}
-#      options:
-#        autoCommit: true
-#        maxSize: 20
-#        protocol: postgres
-#        initialSize: 10
-#        maxLifeTime: PT280S
-#        maxIdleTime: PT60S
-#        maxAcquireTime: PT6S
-#        poolName: r2dbc-pool
-#        registerJmx: true
+r2dbc:
+  datasources:
+    default:
+      options:
+        driver: pool
+        protocol: postgres
+        autoCommit: true
+        maxSize: 32
+        initialSize: 8
+        poolName: r2dbc-pool
+        registerJmx: true
+      url: ${R2DBC_URL:`r2dbc:postgres://localhost:5432/spacedb`}
+      username: ${PG_USERNAME:postgres}
+      password: ${PG_PASSWORD:password}
+      dialect: postgres
 
 jooq:
   r2dbc-datasources:
@@ -65,8 +90,18 @@ liquibase:
       enabled: true
       change-log: 'classpath:master.yaml'
 
+redis:
+  uri: ${REDIS_URI:`redis://localhost:6379`}
+  io-thread-pool-size: 5
+  computation-thread-pool-size: 4
 
+rabbitmq:
+  host: ${RABBITMQ_HOST:localhost}
+  port: ${RABBITMQ_PORT:5672}
+  username: rabbitmq
+  password: rabbitmq
 
-
-
-
+space-app:
+  post:
+    timeline:
+      limit: ${POST_TIMELINE_LIMIT:1000}

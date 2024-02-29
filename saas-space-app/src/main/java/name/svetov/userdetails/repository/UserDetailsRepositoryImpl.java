@@ -1,6 +1,6 @@
 package name.svetov.userdetails.repository;
 
-import io.micronaut.context.annotation.Requires;
+import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import name.svetov.userdetails.converter.UserDetailsRecordConverter;
 import name.svetov.userdetails.model.SearchUserCmd;
@@ -9,9 +9,12 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.generated.tables.records.UserDetailsRecord;
+import org.reactivestreams.Publisher;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
-import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -20,57 +23,61 @@ import static org.jooq.generated.Tables.PASSWORD;
 import static org.jooq.generated.Tables.USER_DETAILS;
 
 @Singleton
-@Requires(property = "micronaut.application.type", value = "blocking")
 public class UserDetailsRepositoryImpl implements UserDetailsRepository {
     private final DSLContext context;
     private final UserDetailsRecordConverter recordConverter;
 
-    public UserDetailsRepositoryImpl(DSLContext context, UserDetailsRecordConverter recordConverter) {
+    public UserDetailsRepositoryImpl(@Named("r2dbc") DSLContext context, UserDetailsRecordConverter recordConverter) {
         this.context = context;
         this.recordConverter = recordConverter;
     }
 
     @Override
-    public UserDetails getOneById(UUID userDetailsId) {
-        return select()
-            .where(USER_DETAILS.ID.eq(userDetailsId))
-            .fetchOne(recordConverter);
-    }
-
-    @Override
-    public UserDetails getOneByUsername(String username) {
-        return select()
-            .where(USER_DETAILS.USERNAME.eq(username))
-            .fetchOne(recordConverter);
-
-    }
-
-    @Override
-    public boolean existsByUsername(String username) {
-        return context.fetchExists(
-            select()
-                .where(USER_DETAILS.USERNAME.eq(username))
-        );
-    }
-
-    @Override
-    public boolean add(UserDetails userDetails) {
-        return insert(userDetails)
-            .execute() == 1;
-    }
-
-    @Override
-    public List<UserDetails> search(SearchUserCmd cmd) {
-        return select()
-            .where(
-                USER_DETAILS.FIRST_NAME.like(cmd.getFirstName() + "%"),
-                USER_DETAILS.LAST_NAME.like(cmd.getLastName() + "%")
+    public Publisher<UserDetails> getOneById(UUID userDetailsId) {
+        return Mono.from(
+                select()
+                    .where(USER_DETAILS.ID.eq(userDetailsId))
             )
-            .orderBy(USER_DETAILS.ID)
-            .fetch(recordConverter);
+            .map(recordConverter);
     }
 
-    InsertSetMoreStep<UserDetailsRecord> insert(UserDetails userDetails) {
+    @Override
+    public Publisher<UserDetails> getOneByUsername(String username) {
+        return Mono.from(
+                select()
+                    .where(USER_DETAILS.USERNAME.eq(username))
+            )
+            .map(recordConverter);
+    }
+
+    @Override
+    public Publisher<Boolean> existsByUsername(String username) {
+        return Mono.from(getOneByUsername(username))
+            .map(Objects::nonNull)
+            .switchIfEmpty(Mono.just(false));
+    }
+
+    @Override
+    public Publisher<UserDetails> add(UserDetails userDetails) {
+        return Mono.from(insert(userDetails).returningResult(USER_DETAILS.ID))
+            .map(response -> response.into(UUID.class))
+            .flatMap(id -> Mono.from(getOneById(id)));
+    }
+
+    @Override
+    public Publisher<UserDetails> search(SearchUserCmd cmd) {
+        return Flux.from(
+                select()
+                    .where(
+                        USER_DETAILS.FIRST_NAME.like(cmd.getFirstName() + "%"),
+                        USER_DETAILS.LAST_NAME.like(cmd.getLastName() + "%")
+                    )
+                    .orderBy(USER_DETAILS.ID)
+            )
+            .map(recordConverter);
+    }
+
+    private InsertSetMoreStep<UserDetailsRecord> insert(UserDetails userDetails) {
         var now = OffsetDateTime.now();
         return context.insertInto(USER_DETAILS)
             .set(USER_DETAILS.ID, userDetails.getId())
