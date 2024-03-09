@@ -19,6 +19,10 @@ public final class EndpointConstants {
     public static final String UPDATE_POST_ENDPOINT = POST_ENDPOINT + "/update";
     public static final String DELETE_POST_ENDPOINT = POST_ENDPOINT + "/delete";
     public static final String POST_TIMELINE_ENDPOINT = POST_ENDPOINT + "/timeline";
+    public static final String DIALOGUE_ENDPOINT = "/dialogue";
+    public static final String GET_DIALOGUE_ENDPOINT = "/dialogue/get";
+    public static final String CREATE_DIALOGUE_ENDPOINT = "/dialogue/create";
     public static final String WEB_SOCKET = "/ws";
     public static final String POST_TIMELINE_WEB_SOCKET_ENDPOINT = WEB_SOCKET + "/post/timeline";
+    public static final String DIALOGUE_WEB_SOCKET_ENDPOINT = WEB_SOCKET + "/dialogue";
 }

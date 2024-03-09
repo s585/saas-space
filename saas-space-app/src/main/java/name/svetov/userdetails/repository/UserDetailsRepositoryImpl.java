@@ -112,6 +112,7 @@ public class UserDetailsRepositoryImpl implements UserDetailsRepository {
             USER_DETAILS.CITY,
             USER_DETAILS.COUNTRY,
             USER_DETAILS.HOBBIES,
+            USER_DETAILS.CELEBRITY,
             USER_DETAILS.CREATED_DATE,
             USER_DETAILS.UPDATED_DATE,
             PASSWORD.SECRET.as(PASSWORD_SECRET_FIELD_ALIAS),

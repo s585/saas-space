@@ -11,3 +11,7 @@ databaseChangeLog:
       file: 1.0/post.yaml
   - include:
       file: 1.0/user_relationships.yaml
+  - include:
+      file: 1.0/dialogue.yaml
+  - include:
+      file: 1.0/dialogue_message.yaml

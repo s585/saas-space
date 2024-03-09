@@ -1,6 +1,5 @@
 package name.svetov.userrelationships.service;
 
-import io.micronaut.context.annotation.Requires;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import name.svetov.userdetails.service.CurrentUserService;
@@ -30,17 +29,17 @@ public class UserRelationshipsServiceImpl implements UserRelationshipsService {
 
     @Override
     public Publisher<Boolean> addFriend(UUID userId) {
-        return Mono.from(currentUserService.getCurrentUserId())
-            .flatMap(currentUserId ->
-                Mono.from(userRelationshipsRepository.add(currentUserId, userId, UserRelationshipsEnum.FRIENDSHIP))
+        return Mono.from(currentUserService.getCurrentUser())
+            .flatMap(currentUser ->
+                Mono.from(userRelationshipsRepository.add(currentUser.getId(), userId, UserRelationshipsEnum.FRIENDSHIP))
             );
     }
 
     @Override
     public Publisher<Boolean> deleteFriend(UUID userId) {
-        return Mono.from(currentUserService.getCurrentUserId())
-            .flatMap(currentUserId ->
-                Mono.from(userRelationshipsRepository.delete(currentUserId, userId, UserRelationshipsEnum.FRIENDSHIP))
+        return Mono.from(currentUserService.getCurrentUser())
+            .flatMap(currentUser ->
+                Mono.from(userRelationshipsRepository.delete(currentUser.getId(), userId, UserRelationshipsEnum.FRIENDSHIP))
             );
     }
 }

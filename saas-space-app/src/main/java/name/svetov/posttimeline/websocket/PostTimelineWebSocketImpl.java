@@ -22,29 +22,27 @@ public class PostTimelineWebSocketImpl implements PostTimelineWebSocket {
 
     @OnOpen
     public Publisher<Void> onOpen(WebSocketSession session) {
-        return Mono.just(session)
-            .flatMap(openSession ->
-                Mono.from(currentUserService.getCurrentUserId())
-                    .flatMap(userId -> Mono.from(
+        return Mono.from(currentUserService.getCurrentUser())
+                    .flatMap(user -> Mono.from(
                             webSocketSessionService.addSession(
                                 POST_TIMELINE_WEBSOCKET_CHANNEL_GROUP,
-                                userId,
-                                openSession
+                                user.getId(),
+                                session
                             )
                         ).then()
-                    )
+
             );
     }
 
     @OnMessage
-    public Publisher<Void> onMessage(String message) {
+    public Publisher<Void> onMessage() {
         return Mono.empty();
     }
 
     @OnClose
     public Publisher<Void> onClose() {
-        return Mono.from(currentUserService.getCurrentUserId())
-            .flatMap(userId -> Mono.from(webSocketSessionService.deleteSession(POST_TIMELINE_WEBSOCKET_CHANNEL_GROUP, userId)))
+        return Mono.from(currentUserService.getCurrentUser())
+            .flatMap(user -> Mono.from(webSocketSessionService.deleteSession(POST_TIMELINE_WEBSOCKET_CHANNEL_GROUP, user.getId())))
             .then();
     }
 }

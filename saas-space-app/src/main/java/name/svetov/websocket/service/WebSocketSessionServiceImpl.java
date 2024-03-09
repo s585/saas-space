@@ -5,6 +5,7 @@ import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import name.svetov.websocket.repository.WebSocketSessionRepository;
+import org.apache.commons.lang3.tuple.Pair;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Mono;
 
@@ -22,12 +23,14 @@ public class WebSocketSessionServiceImpl implements WebSocketSessionService {
 
     @SneakyThrows
     @Override
-    public Publisher<Boolean> addSession(String channelGroup, UUID userId, WebSocketSession session) {
-        return repository.addSession(
-            channelGroup,
-            String.valueOf(userId),
-            session.getId()
-        );
+    public Publisher<Pair<UUID, String>> addSession(String channelGroup, UUID userId, WebSocketSession session) {
+        return Mono.from(
+            repository.addSession(
+                channelGroup,
+                String.valueOf(userId),
+                session.getId()
+            )
+        ).flatMap(response -> Mono.just(Pair.of(userId, session.getId())));
     }
 
     @Override

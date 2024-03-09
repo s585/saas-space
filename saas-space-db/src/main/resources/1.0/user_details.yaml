@@ -16,6 +16,7 @@ databaseChangeLog:
                           country VARCHAR(255),
                           city VARCHAR(255),
                           hobbies VARCHAR(25)[],
+                          celebrity BOOLEAN NOT NULL DEFAULT FALSE,
                           created_date TIMESTAMP WITH TIME ZONE,
                           updated_date TIMESTAMP WITH TIME ZONE,
                           PRIMARY KEY (id)

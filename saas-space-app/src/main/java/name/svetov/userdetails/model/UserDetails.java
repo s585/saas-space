@@ -26,6 +26,7 @@ public class UserDetails {
     private String country;
     private String city;
     private Set<String> hobbies;
+    private boolean celebrity;
     private OffsetDateTime createdDate;
     private OffsetDateTime updatedDate;
 }

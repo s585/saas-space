@@ -11,6 +11,7 @@ import name.svetov.post.repository.PostRepository;
 import name.svetov.userdetails.service.CurrentUserService;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.UUID;
 
@@ -29,19 +30,23 @@ public class PostServiceImpl implements PostService {
     @Override
     public Publisher<Post> create(Post post) {
         var postId = UUID.randomUUID();
-        return Mono.from(currentUserService.getCurrentUserId())
+        return Mono.from(currentUserService.getCurrentUser())
             .flatMap(
-                currentUserId -> Mono.from(
-                    postRepository.add(
-                        post.toBuilder()
-                            .id(postId)
-                            .authorId(currentUserId)
-                            .build()
+                currentUser -> Mono.from(
+                        postRepository.add(
+                            post.toBuilder()
+                                .id(postId)
+                                .authorId(currentUser.getId())
+                                .build()
+                        )
                     )
-                )
-            )
-            .flatMap(created -> Mono.from(postEventPublisher.publish(buildPostCreatedEvent(created)))
-                .then(Mono.just(created))
+                    .publishOn(Schedulers.boundedElastic())
+                    .doOnSuccess(createdPost -> {
+                            if (currentUser.isCelebrity()) {
+                                Mono.from(postEventPublisher.publish(buildPostCreatedEvent(createdPost))).subscribe();
+                            }
+                        }
+                    )
             );
     }
 

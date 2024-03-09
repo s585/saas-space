@@ -23,11 +23,13 @@ public class OauthRefreshTokenPersistence implements RefreshTokenPersistence {
             event.getRefreshToken() != null &&
             event.getAuthentication() != null &&
             event.getAuthentication().getName() != null) {
-            refreshTokenRepository.add(
-                event.getAuthentication().getName(),
-                event.getRefreshToken(),
-                false
-            );
+            Mono.from(
+                refreshTokenRepository.add(
+                    event.getAuthentication().getName(),
+                    event.getRefreshToken(),
+                    false
+                )
+            ).subscribe();
         }
     }
 

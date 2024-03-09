@@ -34,8 +34,8 @@ public class RegistrationServiceImpl implements RegistrationService {
         return Mono.just(cmd)
             .flatMap(item ->
                 Mono.from(userDetailsService.existsByUsername(item.getUsername()))
-                    .flatMap(user -> {
-                            if (BooleanUtils.isTrue(user)) {
+                    .flatMap(exists -> {
+                            if (BooleanUtils.isTrue(exists)) {
                                 return Mono.error(new UserAlreadyExistsException());
                             } else {
                                 return Mono.from(passwordService.create(password))

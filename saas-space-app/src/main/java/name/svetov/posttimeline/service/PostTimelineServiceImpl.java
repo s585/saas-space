@@ -30,9 +30,9 @@ public class PostTimelineServiceImpl implements PostTimelineService {
 
     @Override
     public Publisher<Page<String>> getTimeline(Paging paging) {
-        return Mono.from(currentUserService.getCurrentUserId())
+        return Mono.from(currentUserService.getCurrentUser())
             .flatMapMany(currentUser ->
-                Flux.from(postTimelineRepository.findAllByKey(generateKey(currentUser), paging))
+                Flux.from(postTimelineRepository.findAllByKey(generateKey(currentUser.getId()), paging))
             );
     }
 

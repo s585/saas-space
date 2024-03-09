@@ -8,8 +8,6 @@ import name.svetov.userdetails.repository.UserDetailsRepository;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
-
 @Singleton
 @RequiredArgsConstructor
 public class CurrentUserServiceImpl implements CurrentUserService {
@@ -17,10 +15,9 @@ public class CurrentUserServiceImpl implements CurrentUserService {
     private final SecurityService securityService;
 
     @Override
-    public Publisher<UUID> getCurrentUserId() {
+    public Publisher<UserDetails> getCurrentUser() {
         return Mono.just(securityService.username())
             .flatMap(optional -> optional.map(Mono::just).orElseGet(Mono::empty))
-            .flatMap(username -> Mono.from(userDetailsRepository.getOneByUsername(username)))
-            .map(UserDetails::getId);
+            .flatMap(username -> Mono.from(userDetailsRepository.getOneByUsername(username)));
     }
 }

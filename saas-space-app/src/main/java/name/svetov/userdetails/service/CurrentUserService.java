@@ -1,9 +1,8 @@
 package name.svetov.userdetails.service;
 
+import name.svetov.userdetails.model.UserDetails;
 import org.reactivestreams.Publisher;
 
-import java.util.UUID;
-
 public interface CurrentUserService {
-    Publisher<UUID> getCurrentUserId();
+    Publisher<UserDetails> getCurrentUser();
 }

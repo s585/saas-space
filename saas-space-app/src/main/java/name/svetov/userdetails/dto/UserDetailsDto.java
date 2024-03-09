@@ -10,8 +10,7 @@ import java.time.LocalDate;
 import java.util.Set;
 import java.util.UUID;
 
-@Serdeable.Serializable
-@Serdeable.Deserializable
+@Serdeable
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor

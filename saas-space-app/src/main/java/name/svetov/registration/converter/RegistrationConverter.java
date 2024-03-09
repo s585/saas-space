@@ -1,18 +1,13 @@
 package name.svetov.registration.converter;
 
+import name.svetov.config.SaasMapperDefaultConfig;
 import name.svetov.registration.dto.RegistrationRq;
 import name.svetov.registration.model.RegistrationCmd;
 import name.svetov.userdetails.model.UserDetails;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import java.util.UUID;
-
-@Mapper(
-    componentModel = MappingConstants.ComponentModel.JAKARTA,
-    injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-    unmappedTargetPolicy = ReportingPolicy.ERROR,
-    imports = UUID.class
-)
+@Mapper(config = SaasMapperDefaultConfig.class)
 public interface RegistrationConverter {
     RegistrationCmd convert(RegistrationRq rq);
 
@@ -20,5 +15,6 @@ public interface RegistrationConverter {
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "updatedDate", ignore = true)
+    @Mapping(target = "celebrity", ignore = true)
     UserDetails convert(RegistrationCmd cmd);
 }
