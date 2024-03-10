@@ -27,7 +27,7 @@ function dialogue_message.model(config)
 
     function model.create(dialogue_message_tuple)
         local id = uuid.str()
-        return model.get_space():insert({
+        return model.get_space():insert{
             id,
             dialogue_message_tuple[model.DIALOGUE_ID],
             dialogue_message_tuple[model.AUTHOR_ID],
@@ -35,7 +35,7 @@ function dialogue_message.model(config)
             dialogue_message_tuple[model.PAYLOAD],
             os.date(),
             os.date()
-        })
+        }
     end
 
     return model

@@ -7,6 +7,5 @@ box.cfg {
 box.once("init_db",
         function()
             local db_initializer = require('db.db_initializer')
-            if not db_initializer then print("can't load db_initializer") end
             db_initializer:create_database()
         end)

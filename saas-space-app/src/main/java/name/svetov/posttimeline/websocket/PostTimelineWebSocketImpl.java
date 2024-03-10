@@ -30,12 +30,11 @@ public class PostTimelineWebSocketImpl implements PostTimelineWebSocket {
                                 session
                             )
                         ).then()
-
             );
     }
 
     @OnMessage
-    public Publisher<Void> onMessage() {
+    public Publisher<Void> onMessage(String message) {
         return Mono.empty();
     }
 

@@ -24,12 +24,12 @@ function dialogue.model(config)
 
     function model.create(dialogue_tuple)
         local id = uuid.str()
-        return model.get_space():insert({
+        return model.get_space():insert{
             id,
             dialogue_tuple[model.PARTICIPANTS],
             os.date(),
             os.date()
-        })
+        }
     end
 
     return model
