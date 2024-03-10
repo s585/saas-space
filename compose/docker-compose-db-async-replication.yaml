@@ -81,6 +81,15 @@ services:
     networks:
       - space-app-network
 
+  tarantool:
+    image: tarantool/tarantool:1.7
+    command: tarantool /opt/tarantool/saas-dialogue.lua
+    ports:
+      - "13301:3301"
+    volumes:
+      - ./db/volumes/tarantool/saas-dialogue/app:/opt/tarantool
+      - ./db/volumes/tarantool/saas-dialogue/data:/var/lib/tarantool
+
   rabbitmq:
     image: rabbitmq:3.13.0-management-alpine
     ports:
