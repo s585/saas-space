@@ -402,6 +402,93 @@
 			]
 		},
 		{
+			"name": "Dialogue",
+			"item": [
+				{
+					"name": "createDialogue",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzcGFjZSIsInN1YiI6InRlc3QxQHRlc3QuY29tIiwibmJmIjoxNzA5MjEzNzMyLCJleHAiOjE3MDkyMTczMzIsImlhdCI6MTcwOTIxMzczMiwicm9sZXMiOltdfQ.h4TPWfhUkKFEsiEIOxGDEnj0lD0RwawrWXFTVNkfi7c",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"body\": \"test body 1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9595/post/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9595",
+							"path": [
+								"post",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getById Copy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzcGFjZSIsInN1YiI6InRlc3QxQHRlc3QuY29tIiwibmJmIjoxNzA5MjEzNzMyLCJleHAiOjE3MDkyMTczMzIsImlhdCI6MTcwOTIxMzczMiwicm9sZXMiOltdfQ.h4TPWfhUkKFEsiEIOxGDEnj0lD0RwawrWXFTVNkfi7c",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9595/post/get/d240bd1c-d3ae-11ee-99d5-0242ac190002",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9595",
+							"path": [
+								"post",
+								"get",
+								"d240bd1c-d3ae-11ee-99d5-0242ac190002"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "register",
 			"request": {
 				"auth": {
