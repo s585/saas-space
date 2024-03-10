@@ -1,5 +1,7 @@
 local dialogue = {}
 
+local uuid = require('uuid')
+
 function dialogue.model(config)
     local model = {}
 

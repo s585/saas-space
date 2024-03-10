@@ -16,8 +16,8 @@ services:
     ports:
       - "15432:5432"
     volumes:
-      - ./db/init_scripts:/docker-entrypoint-initdb.d
-      - ./db/volumes/pg_il2_data:/bitnami/postgresql
+      - ./db/postgres/init_scripts:/docker-entrypoint-initdb.d
+      - ./db/postgres/pg_il2_data:/bitnami/postgresql
     environment:
       - POSTGRESQL_DATABASE=spacedb
       - POSTGRES_USER=postgres
@@ -60,7 +60,7 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=password
       - PGADMIN_CONFIG_SERVER_MODE=False
     volumes:
-      - ./db/volumes/backup:/backup
+      - ./db/postgres/backup:/backup
     ports:
       - "5050:5050"
     restart: unless-stopped
@@ -77,18 +77,21 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - ./db/volumes/redis_data:/data
+      - ./db/redis/redis_data:/data
     networks:
       - space-app-network
 
   tarantool:
-    image: tarantool/tarantool:1.7
+    image: tarantool/tarantool:2.10.8
     command: tarantool /opt/tarantool/saas-dialogue.lua
     ports:
       - "13301:3301"
+    environment:
+      - TARANTOOL_USER_NAME=tt_operator
+      - TARANTOOL_USER_PASSWORD=password
     volumes:
-      - ./db/volumes/tarantool/saas-dialogue/app:/opt/tarantool
-      - ./db/volumes/tarantool/saas-dialogue/data:/var/lib/tarantool
+      - ./db/tarantool/saas-dialogue/app:/opt/tarantool
+      - ./db/tarantool/saas-dialogue/data:/var/lib/tarantool
 
   rabbitmq:
     image: rabbitmq:3.13.0-management-alpine
