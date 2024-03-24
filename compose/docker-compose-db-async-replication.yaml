@@ -82,16 +82,26 @@ services:
       - space-app-network
 
   tarantool:
-    image: tarantool/tarantool:2.10.8
-    command: tarantool /opt/tarantool/saas-dialogue.lua
+    build:
+      context: ./db
+      dockerfile: tarantool.Dockerfile
+      args:
+        - TARANTOOL_USER_PASSWORD=password
     ports:
       - "13301:3301"
-    environment:
-      - TARANTOOL_USER_NAME=tt_operator
-      - TARANTOOL_USER_PASSWORD=password
     volumes:
-      - ./db/tarantool/saas-dialogue/app:/opt/tarantool
-      - ./db/tarantool/saas-dialogue/data:/var/lib/tarantool
+      - ./db/volumes/saas-dialogue_data:/var/lib/tarantool
+
+  tarantool_admin:
+    image: quay.io/basis-company/tarantool-admin:latest
+    ports:
+      - "8888:80"
+    environment:
+      - TARANTOOL_TCP_NODELAY=1
+      - TARANTOOL_DATABASE_QUERY=1
+#      - TARANTOOL_CONNECTIONS=tarantool:3301
+#    depends_on:
+#      - tarantool
 
   rabbitmq:
     image: rabbitmq:3.13.0-management-alpine

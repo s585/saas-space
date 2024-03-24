@@ -41,6 +41,7 @@
         <r2dbc-pool.version>1.0.0.RELEASE</r2dbc-pool.version>
         <liquibase.version>4.25.0</liquibase.version>
         <jooq.version>3.19.1</jooq.version>
+        <cartridge-driver.version>0.13.0</cartridge-driver.version>
         <jib-maven-plugin.version>3.4.0</jib-maven-plugin.version>
         <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
         <docker-maven-plugin.version>0.43.4</docker-maven-plugin.version>
@@ -180,6 +181,13 @@
                 <version>${liquibase.version}</version>
                 <scope>compile</scope>
             </dependency>
+
+            <dependency>
+                <groupId>io.tarantool</groupId>
+                <artifactId>cartridge-driver</artifactId>
+                <version>${cartridge-driver.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>io.micronaut.openapi</groupId>
                 <artifactId>micronaut-openapi-annotations</artifactId>

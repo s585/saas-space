@@ -1,0 +1,50 @@
+credentials:
+  users:
+    client:
+      password: 'password'
+      roles: [ super ]
+    replicator:
+      password: 'password'
+      roles: [ replication ]
+    storage:
+      password: 'password'
+      roles: [ sharding ]
+
+iproto:
+  advertise:
+    peer:
+      login: replicator
+    sharding:
+      login: storage
+
+sharding:
+  bucket_count: 3000
+
+groups:
+  storages:
+    app:
+      module: storage
+    sharding:
+      roles: [ storage ]
+    replication:
+      failover: manual
+    replicasets:
+      saas-dialogue-shard1:
+        leader: saas-dialogue-shard1-master
+        instances:
+          saas-dialogue-shard1-master: {}
+          saas-dialogue-shard1-replica: {}
+      saas-dialogue-shard2:
+        leader: saas-dialogue-shard2-master
+        instances:
+          saas-dialogue-shard2-master: {}
+          saas-dialogue-shard2-replica: {}
+  routers:
+    app:
+      module: router
+    sharding:
+      roles: [ router ]
+    replicasets:
+      saas-dialogue-router:
+        instances:
+          saas-dialogue-router-001: {}

@@ -7,12 +7,14 @@ function dialogue.model(config)
 
     model.SPACE_NAME = 'dialogue'
     model.PRIMARY_INDEX = 'primary'
+    model.BUCKET_INDEX = 'bucket_id'
     model.PARTICIPANTS_INDEX = 'participants'
 
-    model.ID = 1
-    model.PARTICIPANTS = 2
-    model.CREATED_DATE = 3
-    model.UPDATED_DATE = 4
+    model.BUCKET_ID = 1
+    model.ID = 2
+    model.PARTICIPANTS = 3
+    model.CREATED_DATE = 4
+    model.UPDATED_DATE = 5
 
     function model.get_space()
         return box.space[model.SPACE_NAME]
@@ -22,10 +24,10 @@ function dialogue.model(config)
         return model.get_space():select(id)
     end
 
-    function model.create(dialogue_tuple)
-        local id = uuid.str()
+    function model.create(bucket_id, dialogue_tuple)
         return model.get_space():insert{
-            id,
+            bucket_id,
+            dialogue_tuple[model.ID],
             dialogue_tuple[model.PARTICIPANTS],
             os.date(),
             os.date()
